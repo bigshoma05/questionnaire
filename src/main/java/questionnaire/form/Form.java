@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class Form {
     private String subject;
     private Status status;
     private List<String> attachments;
-    private Map<Form.Questions, Form.Answers> questionnaire;
+    private Map<Form.Questions, Form.Answers> questionnaire = new HashMap<>();
 
     @Data
     @AllArgsConstructor

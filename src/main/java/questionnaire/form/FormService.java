@@ -10,7 +10,7 @@ import questionnaire.user.UserService;
 @RequiredArgsConstructor
 public class FormService {
   @Autowired
-  UserService userService;
+  FormRepository formRepository;
   @Autowired
   AuthorizationManager authorizationManager;
 
@@ -23,9 +23,11 @@ public class FormService {
     if (!request.getAttachments().isEmpty()){
       form.setAttachments(request.getAttachments());
     }
-    Form.Questions questions = new Form.Questions();
-    questions.setQuestions(request.getQuestions());
+    formRepository.save(form);
 
+    Form.Answers answers = new Form.Answers();
+    form.getQuestionnaire().put((Form.Questions) request.getQuestions(),answers);
+    formRepository.save(form);
   }
 
   private void validateCreateRequest() {
