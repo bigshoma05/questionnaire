@@ -21,5 +21,19 @@ public class Form {
     private String subject;
     private Status status;
     private List<String> attachments;
-    private Map<String, String> questionnaire;
+    private Map<Form.Questions, Form.Answers> questionnaire;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Questions {
+        private List<String> questions;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Answers {
+        private List<String> answers;
+    }
 }
