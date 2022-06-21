@@ -1,7 +1,7 @@
 package questionnaire.form;
 
 public enum Status {
-    DRAFT,
-    PUBLISHED,
-    ANSWERED
+  DRAFT,
+  PUBLISHED,
+  ANSWERED
 }
