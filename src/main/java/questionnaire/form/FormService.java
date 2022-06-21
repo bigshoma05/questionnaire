@@ -4,12 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import questionnaire.auth.AuthorizationManager;
-import questionnaire.form.answers.AnswerRepository;
-import questionnaire.form.answers.Answers;
-import questionnaire.form.answers.SetAnswersRequest;
-import questionnaire.form.questions.QuestionRepository;
-import questionnaire.form.questions.Questions;
-import questionnaire.form.questions.UpdateQuestionsRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +13,6 @@ import java.util.Optional;
 public class FormService {
   @Autowired FormRepository formRepository;
   @Autowired AuthorizationManager authorizationManager;
-  @Autowired AnswerRepository answerRepository;
-  @Autowired QuestionRepository questionRepository;
 
   public Optional<Form> createForm(CreateFormRequest request, String userId) {
     validateCreateRequest();
@@ -29,16 +21,13 @@ public class FormService {
     form.setAuthorId(userId);
     form.setSubject(request.getSubject());
     form.setStatus(Status.DRAFT);
-    if (!request.getAttachments().isEmpty()) {
+    if (request.getAttachments() != null) {
       form.setAttachments(request.getAttachments());
     }
+    form.setQuestions(request.getQuestions());
     formRepository.save(form);
 
     String formId = formRepository.findByAuthorId(userId).getId();
-    Questions questions = new Questions();
-    questions.setFormId(formId);
-    questions.setQuestions(request.getQuestions());
-    questionRepository.save(questions);
 
     return formResponse(formId);
   }
@@ -46,17 +35,15 @@ public class FormService {
   public Optional<Form> setAnswers(SetAnswersRequest request, String userId) {
     validateSetAnswersRequest();
 
-    Optional<Form> form = formRepository.findById(request.getFormId());
-    form.get().setRespondentId(userId);
-    form.get().setStatus(Status.ANSWERED);
-    formRepository.save(form.get());
+    Form form = formRepository.findById(request.getFormId()).get();
+    form.setRespondentId(userId);
+    form.setStatus(Status.ANSWERED);
+    form.setAnswers(request.getAnswers());
+    formRepository.save(form);
 
-    Answers answers = new Answers();
-    answers.setRespondentId(userId);
-    answers.setAnswers(request.getAnswers());
-    answerRepository.save(answers);
+    String formId = formRepository.findByAuthorId(userId).getId();
 
-    return formResponse(request.getFormId());
+    return formResponse(formId);
   }
 
   private void validateSetAnswersRequest() {
@@ -68,9 +55,9 @@ public class FormService {
   public Optional<Form> updateQuestions(UpdateQuestionsRequest request) {
     validateUpdateQuestionsRequest();
 
-    Questions questions = questionRepository.findByFormId(request.getFormId());
-    questions.setQuestions(request.getQuestions());
-    questionRepository.save(questions);
+    Optional<Form> form = formRepository.findById(request.getFormId());
+    form.get().setQuestions(request.getQuestions());
+    formRepository.save(form.get());
     return formResponse(request.getFormId());
   }
 

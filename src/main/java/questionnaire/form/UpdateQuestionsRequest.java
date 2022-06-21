@@ -1,4 +1,4 @@
-package questionnaire.form.questions;
+package questionnaire.form;
 
 import lombok.Data;
 
