@@ -7,6 +7,8 @@ import questionnaire.auth.AuthorizationManager;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -41,9 +43,9 @@ public class FormService {
     form.setAnswers(request.getAnswers());
     formRepository.save(form);
 
-    String formId = formRepository.findByAuthorId(userId).getId();
+//    String formId = formRepository.findByAuthorId(userId).getId();
 
-    return formResponse(formId);
+    return formResponse(request.getFormId());
   }
 
   private void validateSetAnswersRequest() {

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="main.css">
+    <title>Registration</title>
+</head>
+<body>
+<div class="container ">
+    <header class="header">
+        <h1 id="title">
+            Registration
+        </h1>
+
+    </header>
+    <form action="#" th:action="@{/register}" method="post" th:object="${user}">
+
+        <!-- Text section -->
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text"  th:field="*{username}" class="formControl"  placeholder="Enter your username" required>
+        </div>
+        <!-- end of text section -->
+
+        <!-- Text section -->
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" class="formControl"  placeholder="Enter your password" required>
+        </div>
+        <!-- end of text section -->
+
+        <!-- Type Email section -->
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" th:field="*{email}"   class="formControl" placeholder="Enter your Email" required>
+        </div>
+        <!-- end of Email section -->
+
+        <!-- select section -->
+        <div class="form-group">
+            <p id="quest">Current role</p>
+            <select name="role" required id="dropdown" class="formControl">
+                <option value disabled selected >Select current role</option>
+                <option value="admin">Admin</option>
+                <option value="author">Author</option>
+                <option value="user">User</option>
+            </select>
+        </div>
+        <!-- end of select section -->
+
+        <div class="form-group">
+            <button type="submit" id="submit" class="btn">Submit</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
